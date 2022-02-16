@@ -11,5 +11,5 @@ mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
 
 echo "building docker image"
 
-docker build -t kalavithi-service .
+docker build -t kalavithi-service -f ./docker/app/Dockerfile .
 
