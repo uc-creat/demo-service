@@ -5,6 +5,7 @@ services:
     image: kalavithi-service
     build:
       context: .
+      dockerfile: docker/app/Dockerfile
     container_name: kalavithi-service
     depends_on:
       - kalavithi-service-db
