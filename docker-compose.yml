@@ -1,23 +1,21 @@
-version: '3.8'
+version: '3.9'
 
 services:
   app:
     image: kalavithi-service
     build:
       context: .
-      dockerfile: docker/app/Dockerfile
+      dockerfile: ./docker/app/Dockerfile
     container_name: kalavithi-service
     depends_on:
       - kalavithi-service-db
-    secrets:
-      - db-password
     environment:
-      - DB_HOST=kalavithi-service-db
-      - DB_PORT=5432
-      - DB_USERNAME=plus
-      - DB_PASSWORD=/run/secrets/db-password
-      - DB_NAME=kalavithi_db
-      - DB_SCHEMA=kalavithi_dev
+      DB_HOST: kalavithi-service-db
+      DB_PORT: 5432
+      DB_USERNAME: plus
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: kalavithi_db
+      DB_SCHEMA: kalavithi_dev
     ports:
       - "8080:8080"
 
@@ -26,14 +24,9 @@ services:
     container_name: kalavithi-service-db
     volumes:
       - ./docker/db/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
-    secrets:
-      - db-password
     environment:
-      - POSTGRES_USER=plus
-      - POSTGRES_PASSWORD=/run/secrets/db-password
-      - POSTGRES_DB=kalavithi_db
+      POSTGRES_USER: plus
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: kalavithi_db
     ports:
       - "5432:5432"
-secrets:
-  db-password:
-    file: docker/db/password.txt
