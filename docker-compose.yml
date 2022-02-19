@@ -15,7 +15,7 @@ services:
       DB_USERNAME: plus
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: kalavithi_db
-      DB_SCHEMA: kalavithi_dev
+      DB_SCHEMA: kalavithi
     ports:
       - "8080:8080"
 
