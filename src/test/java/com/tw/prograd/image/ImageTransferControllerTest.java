@@ -29,7 +29,7 @@ class ImageTransferControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private ImageService service;
+    private ImageTransferService service;
     private byte[] imageContent;
 
     @BeforeEach

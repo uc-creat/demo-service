@@ -17,9 +17,9 @@ import static org.springframework.http.ResponseEntity.status;
 @RestController
 public class ImageTransferController {
 
-    private final ImageService service;
+    private final ImageTransferService service;
 
-    public ImageTransferController(ImageService service) {
+    public ImageTransferController(ImageTransferService service) {
         this.service = service;
     }
 
