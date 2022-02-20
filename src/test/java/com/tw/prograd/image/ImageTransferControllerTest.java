@@ -45,14 +45,14 @@ class ImageTransferControllerTest {
         Resource resource = mock(Resource.class);
         when(resource.getInputStream()).thenReturn(new ByteArrayInputStream(imageContent));
         when(resource.getFilename()).thenReturn("image.png");
-        when(service.loadAsResource("image.png")).thenReturn(resource);
+        when(service.load("image.png")).thenReturn(resource);
 
         mvc.perform(get("/images/image.png"))
                 .andExpect(status().isOk())
                 .andExpect(header().stringValues(CONTENT_DISPOSITION, "attachment; image=\"image.png\""))
                 .andExpect(content().bytes(imageContent));
 
-        verify(service).loadAsResource("image.png");
+        verify(service).load("image.png");
     }
 
     @Test
@@ -67,12 +67,12 @@ class ImageTransferControllerTest {
     @Test
     public void shouldNotReturnImageWhenNonExistingImageRequested() throws Exception {
 
-        when(service.loadAsResource("image.png")).thenThrow(ImageNotFoundException.class);
+        when(service.load("image.png")).thenThrow(ImageNotFoundException.class);
 
         mvc.perform(get("/images/image.png"))
                 .andExpect(status().isNotFound());
 
-        verify(service).loadAsResource("image.png");
+        verify(service).load("image.png");
     }
 
     @Test

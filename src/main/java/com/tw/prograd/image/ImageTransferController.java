@@ -26,7 +26,7 @@ public class ImageTransferController {
     @GetMapping("/images/{name:.+}")
     public ResponseEntity<Resource> serveImage(@PathVariable String name) {
 
-        Resource image = service.loadAsResource(name);
+        Resource image = service.load(name);
 
         return status(OK)
                 .header(CONTENT_DISPOSITION, "attachment; image=\"" + image.getFilename() + "\"")
