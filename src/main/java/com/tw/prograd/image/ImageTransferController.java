@@ -1,7 +1,7 @@
 package com.tw.prograd.image;
 
 import com.tw.prograd.image.exception.ImageNotFoundException;
-import com.tw.prograd.image.exception.ImageStoreException;
+import com.tw.prograd.image.exception.ImageStorageException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,8 +49,8 @@ public class ImageTransferController {
         return status(NOT_FOUND).build();
     }
 
-    @ExceptionHandler(ImageStoreException.class)
-    private ResponseEntity<?> handleImageStoreException(ImageStoreException exception) {
+    @ExceptionHandler(ImageStorageException.class)
+    private ResponseEntity<?> handleImageStoreException(ImageStorageException exception) {
 
         return status(FORBIDDEN).build();
     }

@@ -1,7 +1,7 @@
 package com.tw.prograd.image;
 
 import com.tw.prograd.image.exception.ImageNotFoundException;
-import com.tw.prograd.image.exception.ImageStoreException;
+import com.tw.prograd.image.exception.ImageStorageException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +90,7 @@ class ImageTransferControllerTest {
     @Test
     public void shouldForbiddenTheUploadWhenFailedToStoreImage() throws Exception {
 
-        doThrow(ImageStoreException.class).when(service).store(image);
+        doThrow(ImageStorageException.class).when(service).store(image);
 
         this.mvc.perform(multipart("/").file(image))
                 .andExpect(status().isForbidden());
