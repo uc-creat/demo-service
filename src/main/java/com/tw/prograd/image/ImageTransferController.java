@@ -1,14 +1,18 @@
 package com.tw.prograd.image;
 
 import com.tw.prograd.image.exception.ImageNotFoundException;
+import com.tw.prograd.image.exception.ImageStoreException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.net.URI;
 
 import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 public class ImageTransferController {
@@ -23,14 +27,31 @@ public class ImageTransferController {
     public ResponseEntity<Resource> serveImage(@PathVariable String name) {
 
         Resource image = service.loadAsResource(name);
-        return ResponseEntity
-                .ok()
+
+        return status(OK)
                 .header(CONTENT_DISPOSITION, "attachment; image=\"" + image.getFilename() + "\"")
                 .body(image);
     }
 
+    @PostMapping("/")
+    public ResponseEntity<Void> handleFileUpload(@RequestParam("image") MultipartFile image, RedirectAttributes redirectAttributes) {
+
+        service.store(image);
+        redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + image.getOriginalFilename() + "!");
+
+        return status(FOUND)
+                .location(URI.create("/")).build();
+    }
+
     @ExceptionHandler(ImageNotFoundException.class)
-    private ResponseEntity<?> handleImageNotFoundException(ImageNotFoundException exc) {
-        return ResponseEntity.notFound().build();
+    private ResponseEntity<?> handleImageNotFoundException(ImageNotFoundException exception) {
+
+        return status(NOT_FOUND).build();
+    }
+
+    @ExceptionHandler(ImageStoreException.class)
+    private ResponseEntity<?> handleImageStoreException(ImageStoreException exception) {
+
+        return status(FORBIDDEN).build();
     }
 }
