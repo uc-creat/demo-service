@@ -1,8 +1,6 @@
-package com.tw.prograd.image.storage.exception;
+package com.tw.prograd.image.storage.file.exception;
 
-import java.io.IOException;
-
-public class StorageInitializeException extends RuntimeException {
+public class StorageInitializeException extends StorageException {
     public StorageInitializeException(String message) {
         super(message);
     }
