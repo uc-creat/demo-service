@@ -7,10 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration //TODO pls look into this annotation later
 public class StorageProperties {
 
-    /**
-     * Folder location for storing files
-     */
-    private String location = "upload-dir";
+    private String location = "images";
 
     public String getLocation() {
         return location;
