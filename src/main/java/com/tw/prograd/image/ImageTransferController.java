@@ -33,14 +33,14 @@ public class ImageTransferController {
                 .body(image);
     }
 
-    @PostMapping("/")
+    @PostMapping("/images")
     public ResponseEntity<Void> handleFileUpload(@RequestParam("image") MultipartFile image, RedirectAttributes redirectAttributes) {
 
         service.store(image);
         redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + image.getOriginalFilename() + "!");
 
         return status(FOUND)
-                .location(URI.create("/")).build();
+                .location(URI.create("/images/"+image.getOriginalFilename())).build();
     }
 
     @ExceptionHandler(ImageNotFoundException.class)
