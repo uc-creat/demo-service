@@ -6,6 +6,7 @@ import com.tw.prograd.image.storage.file.exception.EmptyFileException;
 import com.tw.prograd.image.storage.file.exception.StorageException;
 import com.tw.prograd.image.storage.file.exception.StorageInitializeException;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
+@Service
 public class FileSystemStorageService implements ImageTransferService {
 
     private final Path rootLocation;

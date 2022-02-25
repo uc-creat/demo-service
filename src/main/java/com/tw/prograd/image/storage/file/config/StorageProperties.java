@@ -1,8 +1,10 @@
 package com.tw.prograd.image.storage.file.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 @ConfigurationProperties("storage")
+@Configuration //TODO pls look into this annotation later
 public class StorageProperties {
 
     /**
