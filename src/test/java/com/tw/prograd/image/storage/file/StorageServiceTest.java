@@ -16,16 +16,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
-class FileSystemStorageServiceTest {
+class StorageServiceTest {
 
     private final StorageProperties properties = new StorageProperties();
 
-    private FileSystemStorageService service;
+    private StorageService service;
 
     @BeforeEach
     public void setup() {
         properties.setLocation("build/files/" + Math.abs(new Random().nextLong()));
-        service = new FileSystemStorageService(properties);
+        service = new StorageService(properties);
         service.init();
     }
 

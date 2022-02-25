@@ -18,11 +18,11 @@ import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 @Service
-public class FileSystemStorageService implements ImageTransferService {
+public class StorageService implements ImageTransferService {
 
     private final Path rootLocation;
 
-    public FileSystemStorageService(StorageProperties properties) {
+    public StorageService(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getLocation());
     }
 
