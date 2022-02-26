@@ -9,6 +9,9 @@ before_script:
 #  - echo `pwd` # debug
 #  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
   - export GRADLE_USER_HOME=`pwd`/.gradle
+  - apt-get update -qy
+  - apt-get install -y ruby-dev
+  - gem install dpl
 
 cache:
   paths:
@@ -41,6 +44,7 @@ dev:
   script:
   #   - ./deploy
     - echo "deploy to dev env"
+    - dpl --provider=heroku --app=$HEROKU_APP_DEV --api-key=$HEROKU_API_KEY
 
 test:
   stage: deploy-test
@@ -49,6 +53,8 @@ test:
   script:
   #   - ./deploy
     - echo "deploy to test env"
+    - dpl --provider=heroku --app=$HEROKU_APP_TESTING --api-key=$HEROKU_API_KEY
+
   when: manual
 
 after_script:
