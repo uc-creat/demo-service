@@ -3,14 +3,17 @@ package com.tw.prograd.image.storage.file;
 import com.tw.prograd.image.ImageTransferService;
 import com.tw.prograd.image.storage.file.config.StorageProperties;
 import com.tw.prograd.image.storage.file.exception.EmptyFileException;
+import com.tw.prograd.image.storage.file.exception.ImageNotFoundException;
 import com.tw.prograd.image.storage.file.exception.StorageException;
 import com.tw.prograd.image.storage.file.exception.StorageInitializeException;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,7 +40,19 @@ public class StorageService implements ImageTransferService {
 
     @Override
     public Resource load(String imageName) {
-        return null;
+        try {
+            Path file = rootLocation.resolve(imageName);
+            Resource resource = new UrlResource(file.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new ImageNotFoundException("Could not read image: " + imageName);
+            }
+
+        } catch (MalformedURLException e) {
+            throw new ImageNotFoundException("Could not read image: " + imageName);
+        }
     }
 
     @Override

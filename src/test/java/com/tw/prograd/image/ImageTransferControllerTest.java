@@ -29,8 +29,10 @@ class ImageTransferControllerTest {
     MockMultipartFile image;
     @Autowired
     private MockMvc mvc;
+
     @MockBean
     private ImageTransferService service;
+
     private byte[] imageContent;
 
     @BeforeEach
