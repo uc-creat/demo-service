@@ -44,7 +44,7 @@ dev:
   script:
   #   - ./deploy
     - echo "deploy to dev env"
-    - dpl --provider=heroku --app=$HEROKU_APP_DEV --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=$HEROKU_APP_DEV --api-key=$HEROKU_API_KEY --runtime=java11
 
 test:
   stage: deploy-test
