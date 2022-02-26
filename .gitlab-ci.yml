@@ -1,0 +1,55 @@
+image: gradle:6.9.2-jdk11
+
+stages:
+  - build
+  - deploy-dev
+  - deploy-test
+  - deploy-prod
+before_script:
+#  - echo `pwd` # debug
+#  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+build:
+  stage: build
+  script:
+    - ./gradlew assemble check
+  artifacts:
+    paths:
+      - build/libs/*.jar
+    expire_in: 1 week
+    reports:
+      junit: build/test-results/test/**/TEST-*.xml    
+  only:
+    - main
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
+
+dev:
+  stage: deploy-dev
+  needs:
+    - build
+  script:
+  #   - ./deploy
+    - echo "deploy to dev env"
+
+test:
+  stage: deploy-test
+  needs:
+    - dev
+  script:
+  #   - ./deploy
+    - echo "deploy to test env"
+  when: manual
+
+after_script:
+  - echo "End CI"
