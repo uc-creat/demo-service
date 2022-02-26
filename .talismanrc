@@ -1,0 +1,4 @@
+fileignoreconfig:
+- filename: src/main/resources/db/migration/V1_01__create_image_table.sql
+  checksum: c7a59468291dbef504f1219795750bd08f852a0bdfa0363fe2d8e7bafccbf324
+version: "1.0"

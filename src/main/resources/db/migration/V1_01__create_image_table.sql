@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS image (
+  id    SERIAL NOT NULL PRIMARY KEY,
+  name  text NOT NULL
+);
