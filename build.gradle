@@ -21,6 +21,9 @@ dependencies {
     implementation 'org.postgresql:postgresql'
     implementation 'org.flywaydb:flyway-core:8.5.0'
 
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.h2database:h2:2.1.210'
 }
