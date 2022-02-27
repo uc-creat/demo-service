@@ -1,7 +1,7 @@
 package com.tw.prograd.image;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.tw.prograd.image.DTO.UploadImage;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,10 +10,13 @@ import javax.persistence.Id;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Entity
+@Entity(name = "image")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Image {
+@Getter
+@Setter
+@ToString
+public class ImageEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -21,4 +24,8 @@ public class Image {
 
     @Column(nullable = false)
     private String name;
+
+    public UploadImage toSavedImageDTO() {
+        return new UploadImage(id, name);
+    }
 }

@@ -85,7 +85,7 @@ class StorageServiceTest {
     }
 
     @Test
-    void shouldNotRetrieveImageWhenGivenImageDoesNotExist() throws IOException {
+    void shouldNotRetrieveImageWhenGivenImageDoesNotExist() {
         assertThrows(ImageNotFoundException.class, () -> service.load("nonExistingImage.png"));
-   }
+    }
 }

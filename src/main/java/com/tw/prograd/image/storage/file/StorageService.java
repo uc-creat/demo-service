@@ -1,6 +1,5 @@
 package com.tw.prograd.image.storage.file;
 
-import com.tw.prograd.image.ImageTransferService;
 import com.tw.prograd.image.storage.file.config.StorageProperties;
 import com.tw.prograd.image.storage.file.exception.EmptyFileException;
 import com.tw.prograd.image.storage.file.exception.ImageNotFoundException;
@@ -21,7 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 @Service
-public class StorageService implements ImageTransferService {
+public class StorageService {
 
     private final Path rootLocation;
 
@@ -29,7 +28,6 @@ public class StorageService implements ImageTransferService {
         this.rootLocation = Paths.get(properties.getLocation());
     }
 
-    @Override
     public void init() {
         try {
             Files.createDirectories(rootLocation);
@@ -38,7 +36,6 @@ public class StorageService implements ImageTransferService {
         }
     }
 
-    @Override
     public Resource load(String imageName) {
         try {
             Path file = rootLocation.resolve(imageName);
@@ -55,7 +52,6 @@ public class StorageService implements ImageTransferService {
         }
     }
 
-    @Override
     public void store(MultipartFile image) {
         try {
             if (image.isEmpty())

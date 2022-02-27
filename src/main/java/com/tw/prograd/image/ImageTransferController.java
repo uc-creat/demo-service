@@ -1,5 +1,6 @@
 package com.tw.prograd.image;
 
+import com.tw.prograd.image.DTO.UploadImage;
 import com.tw.prograd.image.exception.ImageNotFoundException;
 import com.tw.prograd.image.exception.ImageStorageException;
 import org.springframework.core.io.Resource;
@@ -34,13 +35,14 @@ public class ImageTransferController {
     }
 
     @PostMapping("/images")
-    public ResponseEntity<Void> handleFileUpload(@RequestParam("image") MultipartFile image, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<UploadImage> uploadImage(@RequestParam("image") MultipartFile file, RedirectAttributes redirectAttributes) {
 
-        service.store(image);
-        redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + image.getOriginalFilename() + "!");
+        UploadImage image = service.store(file);
+        redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + image.getName() + "!");
 
         return status(FOUND)
-                .location(URI.create("/images/" + image.getOriginalFilename())).build();
+                .location(URI.create("/images/" + image.getName()))
+                .body(image);
     }
 
     @ExceptionHandler(ImageNotFoundException.class)

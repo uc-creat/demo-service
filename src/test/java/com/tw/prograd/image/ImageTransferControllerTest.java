@@ -1,5 +1,7 @@
 package com.tw.prograd.image;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tw.prograd.image.DTO.UploadImage;
 import com.tw.prograd.image.exception.ImageNotFoundException;
 import com.tw.prograd.image.exception.ImageStorageException;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,12 +28,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class ImageTransferControllerTest {
 
-    MockMultipartFile image;
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     @MockBean
     private ImageTransferService service;
+
+    private MockMultipartFile image;
 
     private byte[] imageContent;
 
@@ -39,7 +45,6 @@ class ImageTransferControllerTest {
     void setUp() {
         imageContent = "dummy image content".getBytes();
         image = new MockMultipartFile("image", "image.png", "multipart/form-data", imageContent);
-
     }
 
     @Test
@@ -82,11 +87,13 @@ class ImageTransferControllerTest {
     @Test
     public void shouldSaveImageWhenUploaded() throws Exception {
 
-        doNothing().when(service).store(image);
+        UploadImage uploadImage = new UploadImage(1, "image.png");
+        when(service.store(image)).thenReturn(uploadImage);
 
         this.mvc.perform(multipart("/images").file(image))
                 .andExpect(status().isFound())
-                .andExpect(header().string("Location", "/images/image.png"));
+                .andExpect(header().string("Location", "/images/image.png"))
+                .andExpect(content().json(mapper.writeValueAsString(uploadImage)));
 
         verify(service).store(image);
     }
