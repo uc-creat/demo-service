@@ -3,7 +3,10 @@ package com.tw.prograd.image;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -13,9 +16,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Image {
 
     @Id
-    @GeneratedValue(strategy= IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String name;
 }

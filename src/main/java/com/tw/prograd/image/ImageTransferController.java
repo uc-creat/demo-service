@@ -40,7 +40,7 @@ public class ImageTransferController {
         redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + image.getOriginalFilename() + "!");
 
         return status(FOUND)
-                .location(URI.create("/images/"+image.getOriginalFilename())).build();
+                .location(URI.create("/images/" + image.getOriginalFilename())).build();
     }
 
     @ExceptionHandler(ImageNotFoundException.class)
