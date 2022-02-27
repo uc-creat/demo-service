@@ -10,3 +10,6 @@ spring:
 server:
   servlet:
     context-path: /api
+
+springdoc:
+  show-actuator: true
