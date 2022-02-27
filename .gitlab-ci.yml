@@ -42,19 +42,20 @@ dev:
   needs:
     - build
   script:
-  #   - ./deploy
-    - echo "deploy to dev env"
+    - echo "deploying to dev env"
     - dpl --provider=heroku --app=$HEROKU_APP_DEV --api-key=$HEROKU_API_KEY --runtime=java11
+  only:
+    - main
 
 test:
   stage: deploy-test
   needs:
     - dev
   script:
-  #   - ./deploy
-    - echo "deploy to test env"
+    - echo "deploying to test env"
     - dpl --provider=heroku --app=$HEROKU_APP_TESTING --api-key=$HEROKU_API_KEY
-
+  only:
+    - main
   when: manual
 
 after_script:
