@@ -3,6 +3,8 @@ package com.tw.prograd.image;
 import com.tw.prograd.image.DTO.UploadImage;
 import com.tw.prograd.image.exception.ImageNotFoundException;
 import com.tw.prograd.image.exception.ImageStorageException;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +15,15 @@ import java.net.URI;
 
 import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.ResponseEntity.status;
 
 @RestController
+@RequestMapping("/images")
 public class ImageTransferController {
+
+    @Value("#{servletContext.contextPath}")
+    private String servletContextPath;
 
     private final ImageTransferService service;
 
@@ -24,7 +31,7 @@ public class ImageTransferController {
         this.service = service;
     }
 
-    @GetMapping("/images/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Resource> serveImage(@PathVariable Integer id) {
 
         Resource image = service.load(id);
@@ -34,14 +41,14 @@ public class ImageTransferController {
                 .body(image);
     }
 
-    @PostMapping("/images")
-    public ResponseEntity<UploadImage> uploadImage(@RequestParam("image") MultipartFile file, RedirectAttributes redirectAttributes) {
+    @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE, produces = "application/json")
+    public ResponseEntity<UploadImage> uploadImage(@RequestPart("image") MultipartFile file, RedirectAttributes redirectAttributes) {
 
         UploadImage image = service.store(file);
         redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + image.getName() + "!");
 
         return status(FOUND)
-                .location(URI.create("/images/" + image.getId()))
+                .location(URI.create(servletContextPath + "/images/" + image.getId()))
                 .body(image);
     }
 
