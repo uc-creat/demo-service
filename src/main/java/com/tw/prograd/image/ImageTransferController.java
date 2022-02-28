@@ -24,10 +24,10 @@ public class ImageTransferController {
         this.service = service;
     }
 
-    @GetMapping("/images/{name:.+}")
-    public ResponseEntity<Resource> serveImage(@PathVariable String name) {
+    @GetMapping("/images/{id}")
+    public ResponseEntity<Resource> serveImage(@PathVariable Integer id) {
 
-        Resource image = service.load(name);
+        Resource image = service.load(id);
 
         return status(OK)
                 .header(CONTENT_DISPOSITION, "attachment; image=\"" + image.getFilename() + "\"")
@@ -41,7 +41,7 @@ public class ImageTransferController {
         redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + image.getName() + "!");
 
         return status(FOUND)
-                .location(URI.create("/images/" + image.getName()))
+                .location(URI.create("/images/" + image.getId()))
                 .body(image);
     }
 

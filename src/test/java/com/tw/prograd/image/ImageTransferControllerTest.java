@@ -53,14 +53,14 @@ class ImageTransferControllerTest {
         Resource resource = mock(Resource.class);
         when(resource.getInputStream()).thenReturn(new ByteArrayInputStream(imageContent));
         when(resource.getFilename()).thenReturn("image.png");
-        when(service.load("image.png")).thenReturn(resource);
+        when(service.load(1)).thenReturn(resource);
 
-        mvc.perform(get("/images/image.png"))
+        mvc.perform(get("/images/1"))
                 .andExpect(status().isOk())
                 .andExpect(header().stringValues(CONTENT_DISPOSITION, "attachment; image=\"image.png\""))
                 .andExpect(content().bytes(imageContent));
 
-        verify(service).load("image.png");
+        verify(service).load(1);
     }
 
     @Test
@@ -76,12 +76,12 @@ class ImageTransferControllerTest {
     @Test
     public void shouldNotReturnImageWhenNonExistingImageRequested() throws Exception {
 
-        when(service.load("image.png")).thenThrow(ImageNotFoundException.class);
+        when(service.load(1)).thenThrow(ImageNotFoundException.class);
 
-        mvc.perform(get("/images/image.png"))
+        mvc.perform(get("/images/1"))
                 .andExpect(status().isNotFound());
 
-        verify(service).load("image.png");
+        verify(service).load(1);
     }
 
     @Test
@@ -92,7 +92,7 @@ class ImageTransferControllerTest {
 
         this.mvc.perform(multipart("/images").file(image))
                 .andExpect(status().isFound())
-                .andExpect(header().string("Location", "/images/image.png"))
+                .andExpect(header().string("Location", "/images/1"))
                 .andExpect(content().json(mapper.writeValueAsString(uploadImage)));
 
         verify(service).store(image);
