@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @ConfigurationProperties("storage")
-@Configuration //TODO pls look into this annotation later
+@Configuration
 public class StorageProperties {
 
     private String location = "images";
