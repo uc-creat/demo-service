@@ -1,6 +1,5 @@
 package com.tw.prograd.image;
 
-import com.tw.prograd.image.storage.file.config.StorageProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,7 +19,7 @@ class ImageTransferControllerIntegrationTest {
 
     @Test
     public void shouldImagesRouteAllowedInCORSFilter() throws Exception {
-        this.mvc.perform(options("/images/1")
+        this.mvc.perform(options("/images/image.png")
                         .header("Access-Control-Request-Method", "GET")
                         .header("Origin", "http://www.someurl.com"))
                 .andExpect(status().isOk());

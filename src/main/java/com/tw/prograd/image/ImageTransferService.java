@@ -1,11 +1,17 @@
 package com.tw.prograd.image;
 
+import com.tw.prograd.image.DTO.Image;
+import com.tw.prograd.image.DTO.StoredImage;
 import com.tw.prograd.image.DTO.UploadImage;
-import com.tw.prograd.image.exception.ImageNotFoundException;
 import com.tw.prograd.image.storage.file.StorageService;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+import static org.springframework.util.StringUtils.trimTrailingCharacter;
 
 @Service
 public class ImageTransferService {
@@ -19,9 +25,18 @@ public class ImageTransferService {
         this.repository = repository;
     }
 
-    Resource load(Integer id) {
-        ImageEntity imageEntity = repository.findById(id).orElseThrow(()-> new ImageNotFoundException("image id not found"));
-        return service.load(imageEntity.getName());
+    Resource imageByName(String name) {
+        return service.load(name);
+    }
+
+    StoredImage images(String url) {
+
+        List<Image> images = repository.findAll()
+                .parallelStream()
+                .map(it -> new Image(it.getId(), it.getName(), trimTrailingCharacter(url, '/') + "/" + it.getName()))
+                .collect(toList());
+
+        return new StoredImage(images);
     }
 
     UploadImage store(MultipartFile file) {
@@ -29,6 +44,7 @@ public class ImageTransferService {
         ImageEntity imageEntity = new ImageEntity(null, file.getOriginalFilename());
         return repository.save(imageEntity).toSavedImageDTO();
     }
+
     public String contentType(Resource image) {
         return service.contentType(image);
     }

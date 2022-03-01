@@ -16,8 +16,9 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Objects;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
 public class StorageService {
@@ -64,14 +65,14 @@ public class StorageService {
                 throw new StorageException("Cannot store file outside current directory.");
 
             try (InputStream inputStream = image.getInputStream()) {
-                Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(inputStream, destinationFile, REPLACE_EXISTING);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new StorageException("Failed to store file" + image.getOriginalFilename(), e);
         }
     }
 
-    public String contentType(Resource image)  {
+    public String contentType(Resource image) {
         try {
             return Files.probeContentType(Paths.get(image.getURI()));
         } catch (IOException e) {

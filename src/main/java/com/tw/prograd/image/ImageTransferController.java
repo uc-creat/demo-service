@@ -1,9 +1,9 @@
 package com.tw.prograd.image;
 
+import com.tw.prograd.image.DTO.StoredImage;
 import com.tw.prograd.image.DTO.UploadImage;
 import com.tw.prograd.image.exception.ImageNotFoundException;
 import com.tw.prograd.image.exception.ImageStorageException;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.net.URI;
 
 import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.ResponseEntity.status;
@@ -22,23 +25,30 @@ import static org.springframework.http.ResponseEntity.status;
 @RequestMapping("/images")
 public class ImageTransferController {
 
+    private final ImageTransferService service;
     @Value("#{servletContext.contextPath}")
     private String servletContextPath;
-
-    private final ImageTransferService service;
 
     public ImageTransferController(ImageTransferService service) {
         this.service = service;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Resource> serveImage(@PathVariable Integer id) {
+    @GetMapping("/{name}")
+    public ResponseEntity<Resource> serveImage(@PathVariable String name) throws IOException {
 
-        Resource image = service.load(id);
+        Resource image = service.imageByName(name);
 
         return status(OK)
-                .header(CONTENT_DISPOSITION, "attachment; image=\"" + image.getFilename() + "\"")
+                .header(CONTENT_TYPE, service.contentType(image))
+                .header(CONTENT_DISPOSITION, "attachment; filename=\"" + image.getFilename() + "\"")
                 .body(image);
+    }
+
+    @GetMapping
+    public ResponseEntity<StoredImage> serveImages(HttpServletRequest request) {
+
+        return status(OK)
+                .body(service.images(request.getRequestURL().toString()));
     }
 
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE, produces = "application/json")
@@ -48,7 +58,7 @@ public class ImageTransferController {
         redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + image.getName() + "!");
 
         return status(FOUND)
-                .location(URI.create(servletContextPath + "/images/" + image.getId()))
+                .location(URI.create(servletContextPath + "/images/" + image.getName()))
                 .body(image);
     }
 

@@ -95,6 +95,6 @@ class StorageServiceTest {
         service.store(image);
         Resource image = service.load("foo.png");
 
-        assertEquals(IMAGE_PNG_VALUE,  service.contentType(image));
+        assertEquals(IMAGE_PNG_VALUE, service.contentType(image));
     }
 }

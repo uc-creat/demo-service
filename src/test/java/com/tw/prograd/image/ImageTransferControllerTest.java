@@ -18,6 +18,7 @@ import java.io.ByteArrayInputStream;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -51,14 +52,16 @@ class ImageTransferControllerTest {
         Resource resource = mock(Resource.class);
         when(resource.getInputStream()).thenReturn(new ByteArrayInputStream(imageContent));
         when(resource.getFilename()).thenReturn("image.png");
-        when(service.load(1)).thenReturn(resource);
+        when(service.imageByName("image.png")).thenReturn(resource);
+        when(service.contentType(resource)).thenReturn("image/png");
 
-        mvc.perform(get("/images/1"))
+        mvc.perform(get("/images/image.png"))
                 .andExpect(status().isOk())
-                .andExpect(header().stringValues(CONTENT_DISPOSITION, "attachment; image=\"image.png\""))
+                .andExpect(header().stringValues(CONTENT_TYPE, "image/png"))
+                .andExpect(header().stringValues(CONTENT_DISPOSITION, "attachment; filename=\"image.png\""))
                 .andExpect(content().bytes(imageContent));
 
-        verify(service).load(1);
+        verify(service).imageByName("image.png");
     }
 
     @Test
@@ -74,12 +77,12 @@ class ImageTransferControllerTest {
     @Test
     public void shouldNotReturnImageWhenNonExistingImageRequested() throws Exception {
 
-        when(service.load(1)).thenThrow(ImageNotFoundException.class);
+        when(service.imageByName("image.png")).thenThrow(ImageNotFoundException.class);
 
-        mvc.perform(get("/images/1"))
+        mvc.perform(get("/images/image.png"))
                 .andExpect(status().isNotFound());
 
-        verify(service).load(1);
+        verify(service).imageByName("image.png");
     }
 
     @Test
@@ -90,7 +93,7 @@ class ImageTransferControllerTest {
 
         this.mvc.perform(multipart("/images").file(image))
                 .andExpect(status().isFound())
-                .andExpect(header().string("Location", "/images/1"))
+                .andExpect(header().string("Location", "/images/image.png"))
                 .andExpect(content().json(mapper.writeValueAsString(uploadImage)));
 
         verify(service).store(image);
