@@ -29,4 +29,7 @@ public class ImageTransferService {
         ImageEntity imageEntity = new ImageEntity(null, file.getOriginalFilename());
         return repository.save(imageEntity).toSavedImageDTO();
     }
+    public String contentType(Resource image) {
+        return service.contentType(image);
+    }
 }

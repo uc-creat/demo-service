@@ -71,4 +71,11 @@ public class StorageService {
         }
     }
 
+    public String contentType(Resource image)  {
+        try {
+            return Files.probeContentType(Paths.get(image.getURI()));
+        } catch (IOException e) {
+            throw new StorageException("Failed to read content type for file" + image.getFilename(), e);
+        }
+    }
 }

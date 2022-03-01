@@ -48,4 +48,14 @@ class ImageTransferServiceTest {
         verify(storageService).store(image);
         verify(imageRepository).save(any());
     }
+
+    @Test
+    void shouldReturnImageMediaTypeWhenContentTypeRequested() {
+        Resource image = mock(Resource.class);
+        when(storageService.contentType(image)).thenReturn("image/png");
+
+        assertEquals(IMAGE_PNG_VALUE, imageTransferService.contentType(image));
+
+        verify(storageService).contentType(image);
+    }
 }

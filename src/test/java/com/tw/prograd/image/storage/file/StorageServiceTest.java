@@ -88,4 +88,13 @@ class StorageServiceTest {
     void shouldNotRetrieveImageWhenGivenImageDoesNotExist() {
         assertThrows(ImageNotFoundException.class, () -> service.load("nonExistingImage.png"));
     }
+
+
+    @Test
+    void shouldReturnImageMediaTypeWhenContentTypeRequested() {
+        service.store(image);
+        Resource image = service.load("foo.png");
+
+        assertEquals(IMAGE_PNG_VALUE,  service.contentType(image));
+    }
 }
