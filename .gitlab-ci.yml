@@ -18,29 +18,29 @@ cache:
     - .gradle/wrapper
     - .gradle/caches
 
-build:
-  stage: build
-  script:
-    - ./gradlew assemble check
-  artifacts:
-    paths:
-      - build/libs/*.jar
-    expire_in: 1 week
-    reports:
-      junit: build/test-results/test/**/TEST-*.xml    
-  only:
-    - main
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: push
-    paths:
-      - build
-      - .gradle
+# build:
+#   stage: build
+#   script:
+#     - ./gradlew assemble check
+#   artifacts:
+#     paths:
+#       - build/libs/*.jar
+#     expire_in: 1 week
+#     reports:
+#       junit: build/test-results/test/**/TEST-*.xml    
+#   only:
+#     - main
+#   cache:
+#     key: "$CI_COMMIT_REF_NAME"
+#     policy: push
+#     paths:
+#       - build
+#       - .gradle
 
 dev:
   stage: deploy-dev
-  needs:
-    - build
+  # needs:
+  # - build
   script:
     - echo "deploying to dev env"
     - dpl --provider=heroku --app=$HEROKU_APP_DEV --api-key=$HEROKU_API_KEY --runtime=java11
