@@ -13,7 +13,7 @@ public class Config {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/images/*")
+                registry.addMapping("/api/images/**")
                         .allowedOrigins("*");
             }
         };
