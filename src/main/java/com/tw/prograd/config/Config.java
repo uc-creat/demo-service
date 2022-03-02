@@ -14,6 +14,7 @@ public class Config {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/images/**")
+                        .allowedMethods("POST", "GET")
                         .allowedOrigins("*");
             }
         };
