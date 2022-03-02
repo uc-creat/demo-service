@@ -19,7 +19,7 @@ class ImageTransferControllerIntegrationTest {
 
     @Test
     public void shouldImagesRouteAllowedInCORSFilter() throws Exception {
-        this.mvc.perform(options("/images/image.png")
+        this.mvc.perform(options("/api/images/image.png")
                         .header("Access-Control-Request-Method", "GET")
                         .header("Origin", "http://www.someurl.com"))
                 .andExpect(status().isOk());
