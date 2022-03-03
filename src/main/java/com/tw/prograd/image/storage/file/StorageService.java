@@ -34,7 +34,6 @@ public class StorageService {
 
     private final Path rootLocation;
 
-
     private ImageRepository imageRepository;
 
     public StorageService(StorageProperties properties,
