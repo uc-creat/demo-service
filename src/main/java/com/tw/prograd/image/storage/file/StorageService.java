@@ -1,5 +1,6 @@
 package com.tw.prograd.image.storage.file;
 
+import ch.qos.logback.core.util.FileUtil;
 import com.tw.prograd.image.ImageEntity;
 import com.tw.prograd.image.ImageRepository;
 import com.tw.prograd.image.storage.file.config.StorageProperties;
@@ -8,23 +9,24 @@ import com.tw.prograd.image.storage.file.exception.ImageNotFoundException;
 import com.tw.prograd.image.storage.file.exception.StorageException;
 import com.tw.prograd.image.storage.file.exception.StorageInitializeException;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-import static java.nio.file.Files.move;
+import static java.nio.file.Paths.get;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static java.util.Arrays.stream;
 import static java.util.Objects.requireNonNull;
 
 @Service
@@ -32,33 +34,30 @@ public class StorageService {
 
     private final Path rootLocation;
 
-    private ResourceLoader resourceLoader;
 
     private ImageRepository imageRepository;
 
     public StorageService(StorageProperties properties,
-                          ResourceLoader resourceLoader,
                           ImageRepository imageRepository) {
-        this.rootLocation = Paths.get(properties.getLocation());
-        this.resourceLoader = resourceLoader;
+        this.rootLocation = get(properties.getLocation());
         this.imageRepository = imageRepository;
     }
 
 
     public void init() {
         try {
-
             Path directories = Files.createDirectories(rootLocation);
+            //TODO :: temp image info initialization until getting permanent image storage
             if (isEmpty(directories)) {
-                //TODO :: temp image info initialization until getting permanent image storage
-                File file = resourceLoader.getResource("classpath:images").getFile();
-                addImageInfoInImageTable(file);
-                move(Paths.get(file.getPath()), rootLocation, REPLACE_EXISTING);
+                ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(this.getClass().getClassLoader());
+                for (Resource resource : resolver.getResources("classpath:images/*")) {
+                    copyImage(resource);
+                    addImageInfoInImageTable(resource.getFilename());
+                }
             }
         } catch (IOException e) {
             throw new StorageInitializeException("Could not initialize storage", e);
         }
-
     }
 
     public Resource load(String imageName) {
@@ -82,7 +81,7 @@ public class StorageService {
             if (image.isEmpty())
                 throw new EmptyFileException("Failed to store empty file." + image.getOriginalFilename());
 
-            Path path = Paths.get(requireNonNull(image.getOriginalFilename()));
+            Path path = get(requireNonNull(image.getOriginalFilename()));
             Path destinationFile = this.rootLocation.resolve(path).normalize().toAbsolutePath();
 
             if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath()))
@@ -98,17 +97,15 @@ public class StorageService {
 
     public String contentType(Resource image) {
         try {
-            return Files.probeContentType(Paths.get(image.getURI()));
+            return Files.probeContentType(get(image.getURI()));
         } catch (IOException e) {
             throw new StorageException("Failed to read content type for file" + image.getFilename(), e);
         }
     }
 
-    private void addImageInfoInImageTable(File file) {
+    private void addImageInfoInImageTable(String fileName) {
         imageRepository.deleteAll();
-        stream(requireNonNull(file.list()))
-                .map(this::imageEntity)
-                .forEach(imageRepository::save);
+        imageRepository.save(imageEntity(fileName));
     }
 
     private boolean isEmpty(Path path) throws IOException {
@@ -118,6 +115,16 @@ public class StorageService {
         try (Stream<Path> entries = Files.list(path)) {
             return entries.findFirst().isEmpty();
         }
+    }
+
+    private void copyImage(Resource resource) throws IOException {
+        Path path = get(rootLocation.toAbsolutePath().toString(), resource.getFilename());
+
+        if (!Files.exists(path)) {
+            File file = new File(path.toString());
+            FileUtil.createMissingParentDirectories(file);
+        }
+        FileCopyUtils.copy(resource.getInputStream(), new FileOutputStream(path.toFile()));
     }
 
     private ImageEntity imageEntity(String imageName) {

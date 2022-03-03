@@ -46,7 +46,7 @@ class StorageServiceTest {
         imageWithAbsolutePath = new MockMultipartFile("foo", "/etc/passwd", IMAGE_PNG_VALUE, "Hello, World".getBytes());
         imageWithNoContent = new MockMultipartFile("foo", "foo.png", IMAGE_PNG_VALUE, new byte[0]);
 
-        service = new StorageService(properties, null, null);
+        service = new StorageService(properties, null);
         Files.createDirectories(Paths.get(location));
     }
 
