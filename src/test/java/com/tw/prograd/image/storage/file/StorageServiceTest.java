@@ -37,7 +37,7 @@ class StorageServiceTest {
     private MockMultipartFile imageWithNoContent;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
         location = "build/files/" + Math.abs(new Random().nextLong());
         properties = new StorageProperties();
         properties.setLocation(location);
@@ -46,8 +46,8 @@ class StorageServiceTest {
         imageWithAbsolutePath = new MockMultipartFile("foo", "/etc/passwd", IMAGE_PNG_VALUE, "Hello, World".getBytes());
         imageWithNoContent = new MockMultipartFile("foo", "foo.png", IMAGE_PNG_VALUE, new byte[0]);
 
-        service = new StorageService(properties);
-        service.init();
+        service = new StorageService(properties, null, null);
+        Files.createDirectories(Paths.get(location));
     }
 
     @Test
@@ -56,7 +56,8 @@ class StorageServiceTest {
     }
 
     @Test
-    public void shouldStoreImageWhenProvided() {
+    public void
+    shouldStoreImageWhenProvided() {
         service.store(image);
 
         assertThat(Paths.get(properties.getLocation()).resolve("foo.png")).exists();

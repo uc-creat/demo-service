@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static javax.persistence.GenerationType.AUTO;
 
 @Entity(name = "image")
 @AllArgsConstructor
@@ -19,7 +19,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class ImageEntity {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = AUTO)
     private Integer id;
 
     @Column(nullable = false)
