@@ -5,8 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
 @Configuration
-public class Config {
+public class CORSConfig {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -14,7 +17,8 @@ public class Config {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("*");
+                        .allowedMethods(POST.name(), GET.name())
+                        .allowedOriginPatterns("*.netlify.app");
             }
         };
     }
