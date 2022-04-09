@@ -1,7 +1,7 @@
 package com.tw.prograd.image;
 
-import com.tw.prograd.image.DTO.StoredImage;
-import com.tw.prograd.image.DTO.UploadImage;
+import com.tw.prograd.image.dto.StoredImage;
+import com.tw.prograd.image.dto.UploadImage;
 import com.tw.prograd.image.exception.ImageNotFoundException;
 import com.tw.prograd.image.exception.ImageStorageException;
 import org.springframework.beans.factory.annotation.Value;

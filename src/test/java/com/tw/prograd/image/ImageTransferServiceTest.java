@@ -1,8 +1,8 @@
 package com.tw.prograd.image;
 
-import com.tw.prograd.image.DTO.Image;
-import com.tw.prograd.image.DTO.StoredImage;
-import com.tw.prograd.image.DTO.UploadImage;
+import com.tw.prograd.image.dto.Image;
+import com.tw.prograd.image.dto.StoredImage;
+import com.tw.prograd.image.dto.UploadImage;
 import com.tw.prograd.image.storage.file.StorageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

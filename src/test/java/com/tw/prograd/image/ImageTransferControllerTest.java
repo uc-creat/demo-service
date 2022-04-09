@@ -1,7 +1,7 @@
 package com.tw.prograd.image;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tw.prograd.image.DTO.UploadImage;
+import com.tw.prograd.image.dto.UploadImage;
 import com.tw.prograd.image.exception.ImageNotFoundException;
 import com.tw.prograd.image.exception.ImageStorageException;
 import org.junit.jupiter.api.BeforeEach;

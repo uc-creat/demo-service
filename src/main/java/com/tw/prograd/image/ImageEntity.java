@@ -1,6 +1,6 @@
 package com.tw.prograd.image;
 
-import com.tw.prograd.image.DTO.UploadImage;
+import com.tw.prograd.image.dto.UploadImage;
 import lombok.*;
 
 import javax.persistence.Column;
