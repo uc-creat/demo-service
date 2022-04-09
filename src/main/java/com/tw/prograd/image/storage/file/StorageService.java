@@ -48,6 +48,7 @@ public class StorageService {
             Path directories = Files.createDirectories(rootLocation);
             //TODO :: temp image info initialization until getting permanent image storage
             if (isEmpty(directories)) {
+                imageRepository.deleteAll();
                 ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(this.getClass().getClassLoader());
                 for (Resource resource : resolver.getResources("classpath:images/*")) {
                     copyImage(resource);
@@ -103,7 +104,6 @@ public class StorageService {
     }
 
     private void addImageInfoInImageTable(String fileName) {
-        imageRepository.deleteAll();
         imageRepository.save(imageEntity(fileName));
     }
 
