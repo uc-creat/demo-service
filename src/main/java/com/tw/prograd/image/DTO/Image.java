@@ -4,6 +4,8 @@ import lombok.*;
 
 @Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Image {
     private Integer id;
     private String name;

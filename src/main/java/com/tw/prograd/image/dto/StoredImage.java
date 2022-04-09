@@ -6,6 +6,8 @@ import java.util.List;
 
 @Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class StoredImage {
     private List<Image> images;
 }
