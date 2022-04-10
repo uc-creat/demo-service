@@ -1,4 +1,10 @@
 fileignoreconfig:
+- filename: postman/kalavithi_api.postman_collection.json
+  checksum: f177602fc1ec06152f5a06f2b4fb08f89b028f74a60e57af3c4d3e2c0dc524e6
+- filename: postman/kalavithi_dev.postman_environment.json
+  checksum: 2ff4a378aa7271adbd75da95f233b614e412c6064617ca07465e6b33dc67736b
+- filename: postman/kalavithi_local._local.postman_environment.json
+  checksum: f5611c17f2d6ab1b8bde2cde9a32da80241f8341cddb710b8c7a22daaebfcfac
 - filename: src/main/java/com/tw/prograd/user/config/UserConfig.java
   checksum: 90e6833c534fd9de206fd65021d1e6374971c7f7e02b84e9e61c0cf9211de23e
 - filename: src/main/resources/db/migration/V1_01__create_image_table.sql
