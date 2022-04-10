@@ -1,6 +1,9 @@
 package com.tw.prograd.image;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tw.prograd.config.AuthenticationEntryPoint;
+import com.tw.prograd.config.EncoderConfig;
+import com.tw.prograd.config.SecurityConfig;
 import com.tw.prograd.image.dto.UploadImage;
 import com.tw.prograd.image.exception.ImageNotFoundException;
 import com.tw.prograd.image.exception.ImageStorageException;
@@ -10,8 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.ByteArrayInputStream;
@@ -25,6 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest
+@WithMockUser
+@Import({SecurityConfig.class, EncoderConfig.class, AuthenticationEntryPoint.class})
 class ImageTransferControllerTest {
 
     @Autowired

@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
@@ -23,10 +24,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@WithMockUser
 @AutoConfigureMockMvc
 class CORSConfigTest {
     @Autowired
     private MockMvc mvc;
+
+    private static Stream<Arguments> provideAllowedHTTPMethod() {
+        return Map.of(
+                        GET, OK,
+                        POST, OK)
+                .entrySet().stream().map(t -> of(t.getKey(), t.getValue()));
+    }
+
+    private static Stream<Arguments> provideNotAllowedHTTPMethod() {
+        return Map.of(
+                        HEAD, FORBIDDEN,
+                        PUT, FORBIDDEN,
+                        PATCH, FORBIDDEN,
+                        DELETE, FORBIDDEN,
+                        OPTIONS, FORBIDDEN)
+                .entrySet().stream().map(t -> of(t.getKey(), t.getValue()));
+    }
 
     @Test
     public void verifyCORSAllowedDomain() throws Exception {
@@ -59,22 +78,5 @@ class CORSConfigTest {
                 .andExpect(header().string("Access-Control-Allow-Methods", (String) null))
                 .andExpect(header().string("Access-Control-Allow-Origin", (String) null))
                 .andExpect(status().is(status.value()));
-    }
-
-    private static Stream<Arguments> provideAllowedHTTPMethod() {
-        return Map.of(
-                        GET, OK,
-                        POST, OK)
-                .entrySet().stream().map(t -> of(t.getKey(), t.getValue()));
-    }
-
-    private static Stream<Arguments> provideNotAllowedHTTPMethod() {
-        return Map.of(
-                        HEAD, FORBIDDEN,
-                        PUT, FORBIDDEN,
-                        PATCH, FORBIDDEN,
-                        DELETE, FORBIDDEN,
-                        OPTIONS, FORBIDDEN)
-                .entrySet().stream().map(t -> of(t.getKey(), t.getValue()));
     }
 }

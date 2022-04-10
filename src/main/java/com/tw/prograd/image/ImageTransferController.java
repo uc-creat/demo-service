@@ -51,7 +51,7 @@ public class ImageTransferController {
                 .body(service.images(request.getRequestURL().toString()));
     }
 
-    @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE, produces = "application/json")
+    @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<UploadImage> uploadImage(@RequestPart("image") MultipartFile file, RedirectAttributes redirectAttributes) {
 
         UploadImage image = service.store(file);
