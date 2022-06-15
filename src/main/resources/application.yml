@@ -19,3 +19,7 @@ server:
 springdoc:
   show-actuator: true
   packages-to-scan: "com.tw.prograd"
+
+storage:
+  initialize: true
+  location: images

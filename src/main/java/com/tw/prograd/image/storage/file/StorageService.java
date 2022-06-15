@@ -34,29 +34,33 @@ public class StorageService {
 
     private final Path rootLocation;
 
-    private ImageRepository imageRepository;
+    private final StorageProperties properties;
+
+    private final ImageRepository imageRepository;
 
     public StorageService(StorageProperties properties,
                           ImageRepository imageRepository) {
+        this.properties = properties;
         this.rootLocation = get(properties.getLocation());
         this.imageRepository = imageRepository;
     }
 
-
     public void init() {
-        try {
-            Path directories = Files.createDirectories(rootLocation);
-            //TODO :: temp image info initialization until getting permanent image storage
-            if (isEmpty(directories)) {
-                imageRepository.deleteAll();
-                ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(this.getClass().getClassLoader());
-                for (Resource resource : resolver.getResources("classpath:images/*")) {
-                    copyImage(resource);
-                    addImageInfoInImageTable(resource.getFilename());
+        if (properties.isInitialize()) {
+            try {
+                Path directories = Files.createDirectories(rootLocation);
+                //TODO :: temp image info initialization until getting permanent image storage
+                if (isEmpty(directories)) {
+                    imageRepository.deleteAll();
+                    ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(this.getClass().getClassLoader());
+                    for (Resource resource : resolver.getResources("classpath:images/*")) {
+                        copyImage(resource);
+                        addImageInfoInImageTable(resource.getFilename());
+                    }
                 }
+            } catch (IOException e) {
+                throw new StorageInitializeException("Could not initialize storage", e);
             }
-        } catch (IOException e) {
-            throw new StorageInitializeException("Could not initialize storage", e);
         }
     }
 

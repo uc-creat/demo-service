@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class StorageProperties {
 
-    private String location = "images";
+    private String location;
+
+    private boolean initialize;
 
     public String getLocation() {
         return location;
@@ -17,4 +19,11 @@ public class StorageProperties {
         this.location = location;
     }
 
+    public boolean isInitialize() {
+        return initialize;
+    }
+
+    public void setInitialize(boolean initialize) {
+        this.initialize = initialize;
+    }
 }

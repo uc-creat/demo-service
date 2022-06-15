@@ -40,6 +40,7 @@ class StorageServiceTest {
     public void setup() throws IOException {
         location = "build/files/" + Math.abs(new Random().nextLong());
         properties = new StorageProperties();
+        properties.setInitialize(false);
         properties.setLocation(location);
 
         image = new MockMultipartFile("foo", "foo.png", IMAGE_PNG_VALUE, "Hello, World".getBytes());
