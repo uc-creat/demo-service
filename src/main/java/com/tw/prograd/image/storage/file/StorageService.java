@@ -23,10 +23,10 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Stream;
 
 import static java.nio.file.Paths.get;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.util.Arrays.stream;
 import static java.util.Objects.requireNonNull;
 
 @Service
@@ -45,22 +45,15 @@ public class StorageService {
         this.imageRepository = imageRepository;
     }
 
-    public void init() {
+    public void init() throws IOException {
+        //TODO :: temporary image details initialization until getting permanent image storage
         if (properties.isInitialize()) {
-            try {
-                Path directories = Files.createDirectories(rootLocation);
-                //TODO :: temp image info initialization until getting permanent image storage
-                if (isEmpty(directories)) {
-                    imageRepository.deleteAll();
-                    ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(this.getClass().getClassLoader());
-                    for (Resource resource : resolver.getResources("classpath:images/*")) {
-                        copyImage(resource);
-                        addImageInfoInImageTable(resource.getFilename());
-                    }
-                }
-            } catch (IOException e) {
-                throw new StorageInitializeException("Could not initialize storage", e);
-            }
+            ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(this.getClass().getClassLoader());
+            stream(resolver.getResources("classpath:images/*"))
+                    .peek(this::copyImageToFolder)
+                    .map(Resource::getFilename)
+                    .filter(fileName -> imageRepository.findByName(fileName).isEmpty())
+                    .forEach(it -> imageRepository.save(imageEntity(it)));
         }
     }
 
@@ -107,27 +100,22 @@ public class StorageService {
         }
     }
 
-    private void addImageInfoInImageTable(String fileName) {
-        imageRepository.save(imageEntity(fileName));
-    }
-
-    private boolean isEmpty(Path path) throws IOException {
-        if (!Files.isDirectory(path))
-            return false;
-
-        try (Stream<Path> entries = Files.list(path)) {
-            return entries.findFirst().isEmpty();
-        }
-    }
-
-    private void copyImage(Resource resource) throws IOException {
+    private void copyImageToFolder(Resource resource) {
         Path path = get(rootLocation.toAbsolutePath().toString(), resource.getFilename());
 
-        if (!Files.exists(path)) {
-            File file = new File(path.toString());
-            FileUtil.createMissingParentDirectories(file);
+        if (Files.exists(path))
+            return;
+
+
+        File file = new File(path.toString());
+        FileUtil.createMissingParentDirectories(file);
+
+        try {
+            FileCopyUtils.copy(resource.getInputStream(), new FileOutputStream(path.toFile()));
+        } catch (IOException e) {
+            throw new StorageInitializeException("Could not initialize storage", e);
         }
-        FileCopyUtils.copy(resource.getInputStream(), new FileOutputStream(path.toFile()));
+
     }
 
     private ImageEntity imageEntity(String imageName) {
