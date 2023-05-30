@@ -1,0 +1,113 @@
+{
+  "timestamp" : "15.06.2022 21.14.58.468",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Starting Application using Java 11.0.13 on UC with PID 106940 (F:\\Thoughtworks\\Batch-7\\kalavithi-service\\build\\classes\\java\\main started by home in F:\\Thoughtworks\\Batch-7\\kalavithi-service)",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.14.58.531",
+  "level" : "DEBUG",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Running with Spring Boot v2.6.3, Spring v5.3.15",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.14.58.531",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "No active profile set, falling back to default profiles: default",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.15.16.195",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Started Application in 20.642 seconds (JVM running for 21.491)",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.51.41.871",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Starting Application using Java 11.0.13 on UC with PID 92968 (F:\\Thoughtworks\\Batch-7\\kalavithi-service\\build\\classes\\java\\main started by home in F:\\Thoughtworks\\Batch-7\\kalavithi-service)",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.51.41.917",
+  "level" : "DEBUG",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Running with Spring Boot v2.6.3, Spring v5.3.15",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.51.41.917",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "No active profile set, falling back to default profiles: default",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.51.57.633",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Started Application in 17.533 seconds (JVM running for 18.617)",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.55.38.698",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Starting Application using Java 11.0.13 on UC with PID 99276 (F:\\Thoughtworks\\Batch-7\\kalavithi-service\\build\\classes\\java\\main started by home in F:\\Thoughtworks\\Batch-7\\kalavithi-service)",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.55.38.745",
+  "level" : "DEBUG",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Running with Spring Boot v2.6.3, Spring v5.3.15",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.55.38.745",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "No active profile set, falling back to default profiles: default",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.55.55.283",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Started Application in 18.267 seconds (JVM running for 19.468)",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.57.11.093",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Starting Application using Java 11.0.13 on UC with PID 107120 (F:\\Thoughtworks\\Batch-7\\kalavithi-service\\build\\classes\\java\\main started by home in F:\\Thoughtworks\\Batch-7\\kalavithi-service)",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.57.11.218",
+  "level" : "DEBUG",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Running with Spring Boot v2.6.3, Spring v5.3.15",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.57.11.218",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "No active profile set, falling back to default profiles: default",
+  "context" : "default"
+}{
+  "timestamp" : "15.06.2022 21.57.29.265",
+  "level" : "INFO",
+  "thread" : "main",
+  "logger" : "com.tw.prograd.Application",
+  "message" : "Started Application in 19.905 seconds (JVM running for 21.087)",
+  "context" : "default"
+}

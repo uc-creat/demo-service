@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?currentSchema=${DB_SCHEMA}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/batchsevendata2
+    username: postgres
+    password: utkarshutc212629
 
   jpa:
     show-sql: true
@@ -15,6 +15,7 @@ spring:
 server:
   servlet:
     context-path: /api
+  port: 8881
 
 springdoc:
   show-actuator: true
